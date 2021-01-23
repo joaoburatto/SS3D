@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class fixes the error:
+/// "UnityException: * can only be called from the main thread."
+/// Just use UnityMainThread.wkr.AddJob( delegate {} )
+/// </summary>
 internal class UnityMainThread : MonoBehaviour
 {
     internal static UnityMainThread wkr;

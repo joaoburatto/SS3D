@@ -6,6 +6,9 @@ using Mirror;
 
 namespace SS3D.Content.Systems.Player
 {
+    /// <summary>
+    /// This class makes sure the player camera works when it spawns
+    /// </summary>
     public class CameraRegister : NetworkBehaviour
     {
         private Camera camera;

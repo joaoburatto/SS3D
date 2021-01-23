@@ -6,6 +6,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking.Types;
 
+/// <summary>
+/// This controls the pause menu
+/// </summary>
 public class PauseMenu : NetworkBehaviour
 {
     [SerializeField] Animator animator;
