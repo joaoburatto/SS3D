@@ -1082,7 +1082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4468402021075485018, guid: cc5383d385556f443b2a7d3202f2b2c1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -229.99995
+      value: -229.99982
       objectReference: {fileID: 0}
     - target: {fileID: 4468402021573311568, guid: cc5383d385556f443b2a7d3202f2b2c1, type: 3}
       propertyPath: m_OnFocusSelectAll
@@ -1351,8 +1351,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ckey - application mode
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 62e6adf63482d6f42aee1f313095799e, type: 2}
-  m_sharedMaterial: {fileID: -5529144078996397610, guid: 62e6adf63482d6f42aee1f313095799e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 010212b85a9be6c4a9616a17976115e3, type: 2}
+  m_sharedMaterial: {fileID: -6023671024691560920, guid: 010212b85a9be6c4a9616a17976115e3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1376,8 +1376,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 8
+  m_fontSizeBase: 8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
