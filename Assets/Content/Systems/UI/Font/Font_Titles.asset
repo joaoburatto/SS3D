@@ -55,11 +55,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: TMPFontHeader2
+  m_Name: Font_Titles
   m_EditorClassIdentifier: 
-  hashCode: -1004811101
+  hashCode: 149036319
   material: {fileID: -5529144078996397610}
-  materialHashCode: 2057705635
+  materialHashCode: -1220722081
   m_Version: 1.1.0
   m_SourceFontFileGUID: 86ea6299c33458946a5d84f274786204
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 86ea6299c33458946a5d84f274786204, type: 3}
@@ -70,7 +70,7 @@ MonoBehaviour:
     m_FamilyName: Ode to Idle Gaming
     m_StyleName: Regular
     m_PointSize: 245
-    m_Scale: 0.5
+    m_Scale: 1
     m_LineHeight: 428.75003
     m_AscentLine: 336.875
     m_CapLine: 245
