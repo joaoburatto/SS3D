@@ -6,9 +6,10 @@ using Coimbra.Services.Events;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using JetBrains.Annotations;
 using SS3D.Core;
 using SS3D.Core.Behaviours;
-using SS3D.Core.Settings;
+using SS3D.Data.AssetDatabases;
 using SS3D.Logging;
 using SS3D.Systems.Entities.Events;
 using SS3D.Systems.Roles;
@@ -57,7 +58,7 @@ namespace SS3D.Systems.Entities
 
         public Entity GetSpawnedEntity(Player player)
         {
-            var entity = _spawnedPlayers.Find(entity => entity.Mind.player == player);
+            var entity = _spawnedPlayers.Find(entity => entity.Mind.Player == player);
             if (IsPlayerSpawned(player))
             {
                 return entity;
@@ -67,7 +68,7 @@ namespace SS3D.Systems.Entities
 
         public bool TryGetSpawnedEntity(NetworkConnection conn, out Entity entity)
         {
-            entity = _spawnedPlayers.Find(entity => entity.Mind?.player?.Owner == conn);
+            entity = _spawnedPlayers.Find(entity => entity.Mind?.Player?.Owner == conn);
             return entity != null;
         }
 
@@ -78,7 +79,7 @@ namespace SS3D.Systems.Entities
         /// <returns>Is the player is controlling an entity</returns>
         public bool IsPlayerSpawned(Player player)
         {
-            Entity spawnedPlayer = _spawnedPlayers.Find(entity => entity.Mind.player == player);
+            Entity spawnedPlayer = _spawnedPlayers.Find(entity => entity.Mind.Player == player);
             return spawnedPlayer != null && spawnedPlayer.Mind != Mind.Empty;
         }
 
@@ -89,7 +90,7 @@ namespace SS3D.Systems.Entities
         /// <returns>Is the player is controlling an entity</returns>
         public bool IsPlayerSpawned(NetworkConnection networkConnection)
         {
-            Entity spawnedPlayer = _spawnedPlayers.Find(entity => entity.Mind?.player?.Owner == networkConnection);
+            Entity spawnedPlayer = _spawnedPlayers.Find(entity => entity.Mind?.Player?.Owner == networkConnection);
 
             bool isPlayerSpawned;
 
@@ -180,7 +181,7 @@ namespace SS3D.Systems.Entities
         {
             if (!IsPlayerSpawned(player) && _hasSpawnedInitialPlayers)
             {
-                SpawnPlayer(player);
+                SpawnHumanAtSpawnpoint(player);
             }
         }
 
@@ -189,24 +190,43 @@ namespace SS3D.Systems.Entities
         /// </summary>
         /// <param name="playerUnique user object</param>
         [Server]
-        private void SpawnPlayer(Player player)
+        private void SpawnHumanAtSpawnpoint(Player entityOwner)
         {
             MindSystem mindSystem = Subsystems.Get<MindSystem>();
-            mindSystem.TryCreateMind(player, out Mind createdMind);
+            mindSystem.TryCreateMind(entityOwner, out Mind createdMind);
 
             Entity entity = Instantiate(_humanPrefab[Random.Range(0, _humanPrefab.Count)], _spawnPoint.position, Quaternion.identity);
-            ServerManager.Spawn(entity.NetworkObject, player.Owner);
+            ServerManager.Spawn(entity.NetworkObject, entityOwner.Owner);
 
-            createdMind.SetPlayer(player);
+            createdMind.SetPlayer(entityOwner);
             entity.SetMind(createdMind);
 
+            // TODO: I don't think this should be responsability of this system
             Subsystems.Get<RoleSystem>().GiveRoleLoadoutToPlayer(entity);
 
             _spawnedPlayers.Add(entity);
 
             RpcInvokeClientSpawned(entity.Owner);
 
-            Log.Information(this, "Spawning mind {createdMind} on {entity}", Logs.ServerOnly, createdMind.name, entity.name);
+            Log.Information(this, $"Spawning mind {createdMind} on {entity}", Logs.ServerOnly, createdMind.name, entity.name);
+        }
+
+        [NotNull]
+        public Entity SpawnEntity(Player entityOwner, [NotNull] Entity entityPrefab)
+        {
+            MindSystem mindSystem = Subsystems.Get<MindSystem>();
+
+            Mind createdMind = mindSystem.GetOrCreateMind(entityOwner);
+
+            Entity entity = Instantiate(entityPrefab);
+            ServerManager.Spawn(entity.NetworkObject, entityOwner.Owner);
+
+            createdMind.SetPlayer(entityOwner);
+            entity.SetMind(createdMind);
+
+            Log.Information(this, $"Spawning mind {createdMind} on {entity}", Logs.ServerOnly, createdMind.name, entityPrefab.name);
+
+            return entity;
         }
 
         /// <summary>
@@ -225,7 +245,7 @@ namespace SS3D.Systems.Entities
 
             foreach (Player ckey in players)
             {
-                SpawnPlayer(ckey);
+                SpawnHumanAtSpawnpoint(ckey);
             }
 
             _hasSpawnedInitialPlayers = true;

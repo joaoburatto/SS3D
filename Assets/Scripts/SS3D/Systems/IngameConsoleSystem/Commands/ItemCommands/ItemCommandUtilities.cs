@@ -1,5 +1,4 @@
-﻿using SS3D.Core.Settings;
-using SS3D.Core;
+﻿using SS3D.Core;
 using SS3D.Systems.Entities;
 using SS3D.Systems.Inventory.Containers;
 using SS3D.Systems.PlayerControl;

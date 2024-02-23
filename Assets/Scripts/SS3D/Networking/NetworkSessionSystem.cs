@@ -3,7 +3,6 @@ using Coimbra.Services.Events;
 using FishNet;
 using FishNet.Managing;
 using SS3D.Application.Events;
-using SS3D.Core.Settings;
 using SS3D.Logging;
 using SS3D.Networking.Settings;
 using System;
@@ -61,8 +60,6 @@ namespace SS3D.Networking
 
             NetworkManager networkManager = InstanceFinder.NetworkManager;
             NetworkSettings networkSettings = ScriptableSettings.GetOrFind<NetworkSettings>();
-
-            LocalPlayer.UpdateCkey(networkSettings.Ckey);
 
             string ckey = networkSettings.Ckey;
             ServerAddress  = networkSettings.ServerAddress;

@@ -68,7 +68,7 @@ namespace SS3D.Systems.Inventory.Interactions
 
 
                 try {
-                    string ckey = hand.HandsController.Inventory.Body.Mind.player.Ckey;
+                    string ckey = hand.HandsController.Inventory.Body.Mind.Player.Ckey;
 
                     // and call the event for picking up items for the Game Mode System
                     new ItemPickedUpEvent(target, ckey).Invoke(this);

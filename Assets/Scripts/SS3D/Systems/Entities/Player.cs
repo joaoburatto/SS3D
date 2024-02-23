@@ -2,6 +2,7 @@ using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using SS3D.Core.Behaviours;
+using SS3D.Systems.PlayerControl;
 using SS3D.Systems.Screens;
 
 namespace SS3D.Systems.Entities
@@ -28,6 +29,17 @@ namespace SS3D.Systems.Entities
         public void SetCkey(string ckey)
         {
             _ckey = ckey;
+        }
+
+        public override void OnOwnershipClient(NetworkConnection prevOwner)
+        {
+            base.OnOwnershipClient(prevOwner);
+
+            if (IsLocalConnection)
+            {
+                LocalPlayer.Connection = Owner;
+                LocalPlayer.Player = this;
+            }
         }
 
         /// <summary>

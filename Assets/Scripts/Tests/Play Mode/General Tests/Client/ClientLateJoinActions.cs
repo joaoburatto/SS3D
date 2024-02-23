@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using SS3D.Core;
-using SS3D.Core.Settings;
 using SS3D.Systems.Rounds;
 using SS3D.UI.Buttons;
 using UnityEngine;

@@ -12,6 +12,15 @@
         {
             base.OnAwake();
             Subsystems.Register(this);
+
+            GameObject.name = GetType().Name;
+        }
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            name = GetType().Name;
         }
 
         protected override void OnDestroyed()

@@ -1,13 +1,8 @@
 ﻿using System;
-using Coimbra;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using SS3D.Core.Behaviours;
-using SS3D.Systems.Entities.Events;
-using SS3D.Systems.Entities.Humanoid;
-using SS3D.Systems.Health;
-using SS3D.Systems.Interactions;
-using SS3D.Systems.Inventory.Containers;
+using SS3D.Systems.PlayerControl;
 using UnityEngine;
 
 namespace SS3D.Systems.Entities
@@ -30,7 +25,7 @@ namespace SS3D.Systems.Entities
             set => _mind = value;
         }
 
-        public string Ckey => _mind.player.Ckey;
+        public string Ckey => _mind.Player.Ckey;
 
         protected override void OnStart()
         {
@@ -50,22 +45,23 @@ namespace SS3D.Systems.Entities
 
             if (IsOwner)
             {
-                LocalPlayerObjectChanged localPlayerObjectChanged = new(GameObject, false);
-                localPlayerObjectChanged.Invoke(this);
+                LocalPlayer.SetPlayerObject(null);
             }
         }
 
-        private void InvokeLocalPlayerObjectChanged()
+        private void OnLocalPlayerObjectChanged()
         {
-            if (Mind == null || Mind.player == null) return;
-
-            if (!Mind.player.IsLocalConnection)
+            if (Mind == null || Mind.Player == null)
             {
                 return;
             }
 
-            LocalPlayerObjectChanged localPlayerObjectChanged = new(GameObject, true);
-            localPlayerObjectChanged.Invoke(this);
+            if (!Mind.Player.IsLocalConnection)
+            {
+                return;
+            }
+
+            LocalPlayer.SetPlayerObject(GameObject);
         }
 
         /// <summary>
@@ -82,7 +78,7 @@ namespace SS3D.Systems.Entities
             }
 
             OnMindChanged?.Invoke(_mind);
-            InvokeLocalPlayerObjectChanged();
+            OnLocalPlayerObjectChanged();
         }
 
         /// <summary>

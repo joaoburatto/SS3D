@@ -2,13 +2,14 @@ using Coimbra;
 using Coimbra.Services.Events;
 using SS3D.Core;
 using SS3D.Core.Behaviours;
-using SS3D.Core.Settings;
+using SS3D.Permissions;
+using SS3D.Systems.PlayerControl;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UserPermissionsChangedEvent = SS3D.Permissions.Events.UserPermissionsChangedEvent;
 
-namespace SS3D.Permissions
+namespace SS3D.Systems.Lobby
 {
     public class DisableIfNotAdmin : NetworkActor
     {

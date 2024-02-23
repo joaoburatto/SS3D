@@ -1,5 +1,4 @@
 ﻿using Coimbra;
-using SS3D.Core.Settings;
 using SS3D.Data;
 using SS3D.Logging;
 using UnityEngine;

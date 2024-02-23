@@ -2,6 +2,7 @@
 using FishNet.Object.Synchronizing;
 using SS3D.Core;
 using SS3D.Core.Behaviours;
+using UnityEngine.Serialization;
 
 namespace SS3D.Systems.Entities
 {
@@ -9,19 +10,20 @@ namespace SS3D.Systems.Entities
     /// Representation of a mind, it is what "owns" an entity (player controllable).
     /// A mind is controlled by a Player, a Player can control multiple minds (not at the same time).
     /// </summary>
-    public class Mind : NetworkActor
+    public sealed class Mind : NetworkActor
     {
+        [FormerlySerializedAs("player")]
         [SyncVar(OnChange = nameof(SyncPlayer))]
-        public Player player;
+        public Player Player;
 
         [SyncVar]
         public Entity Entity;
 
         public static Mind Empty { get; private set; }
 
-        protected override void OnStart()
+        protected override void OnAwake()
         {
-            base.OnStart();
+            base.OnAwake();
 
             Empty = Subsystems.Get<MindSystem>().EmptyMind;
         }
@@ -29,7 +31,7 @@ namespace SS3D.Systems.Entities
         [Server]
         public void SetPlayer(Player player)
         {
-            this.player = player;
+            Player = player;
         }
 
         public void SyncPlayer(Player oldPlayer, Player newPlayer, bool asServer)

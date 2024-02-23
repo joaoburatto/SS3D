@@ -38,7 +38,7 @@ namespace SS3D.Core.Behaviours
         /// <summary>
         /// The event bus listeners added to this object, cleared on OnDestroy
         /// </summary>
-        private readonly List<EventHandle> _eventHandles = new();
+        private List<EventHandle> _eventHandles;
 
         /// <inheritdoc />
         public int Id => GameObject.GetInstanceID();
@@ -164,6 +164,8 @@ namespace SS3D.Core.Behaviours
         /// <inheritdoc/>
         public void AddHandle(EventHandle handle)
         {
+            _eventHandles ??= new List<EventHandle>();
+
             _eventHandles.Add(handle);
         }
 
@@ -236,6 +238,11 @@ namespace SS3D.Core.Behaviours
         /// </summary>
         private void RemoveEventListeners()
         {
+            if (_eventHandles == null)
+            {
+                return;
+            }
+
             IEventService eventService = ServiceLocator.GetChecked<IEventService>();
 
             foreach (EventHandle eventHandle in _eventHandles)

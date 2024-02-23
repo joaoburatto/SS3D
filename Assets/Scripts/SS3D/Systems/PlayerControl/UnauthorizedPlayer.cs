@@ -1,5 +1,4 @@
 using FishNet.Object;
-using SS3D.Core.Settings;
 using SS3D.Logging;
 using SS3D.Systems.PlayerControl.Messages;
 

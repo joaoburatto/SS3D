@@ -1,6 +1,7 @@
 ﻿using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using JetBrains.Annotations;
 using SS3D.Core;
 using SS3D.Core.Behaviours;
 using SS3D.Systems.PlayerControl;
@@ -36,7 +37,7 @@ namespace SS3D.Systems.Entities
             // todo inspect do we really need to GetPlayer when we pass a player already?
             Player actualPlayer = playerSystem.GetPlayer(player.Owner);
 
-            mind = _spawnedMinds.Find(spawnedMind => spawnedMind.player == actualPlayer);
+            mind = _spawnedMinds.Find(spawnedMind => spawnedMind.Player == actualPlayer);
 
             if (mind != null)
             {
@@ -47,6 +48,11 @@ namespace SS3D.Systems.Entities
             return false;
         }
 
+        public Mind GetOrCreateMind(Player player)
+        {
+            return TryGetMind(player, out Mind mind) ? mind : CreateOrReplaceMind(player);
+        }
+
         /// <summary>
         /// Returns if a user has a mind or not.
         /// </summary>
@@ -54,7 +60,7 @@ namespace SS3D.Systems.Entities
         /// <returns></returns>
         public bool HasMind(Player player)
         {
-            Mind mind = _spawnedMinds.Find(spawnedMind => spawnedMind.player == player);
+            Mind mind = _spawnedMinds.Find(spawnedMind => spawnedMind.Player == player);
 
             return mind != null;
         }
@@ -81,6 +87,24 @@ namespace SS3D.Systems.Entities
 
             createdMind = mind;
             return true;
+        }
+
+        [NotNull]
+        public Mind CreateOrReplaceMind([NotNull] Player player)
+        {
+            Mind createdOrFoundMind = null;
+
+            if (TryGetMind(player, out Mind existingMind))
+            {
+                existingMind.Despawn();
+            }
+
+            createdOrFoundMind = Instantiate(_mindPrefab).GetComponent<Mind>();
+            ServerManager.Spawn(createdOrFoundMind.GameObject, player.Owner);
+
+            createdOrFoundMind.SetPlayer(player);
+
+            return createdOrFoundMind;
         }
 
         /// <summary>

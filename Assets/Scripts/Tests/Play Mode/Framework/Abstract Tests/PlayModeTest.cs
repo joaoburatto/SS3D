@@ -7,7 +7,6 @@ using System.Threading;
 using Coimbra;
 using NUnit.Framework;
 using SS3D.Core;
-using SS3D.Core.Settings;
 using SS3D.Networking;
 using SS3D.Networking.Settings;
 using SS3D.Systems.Entities;
